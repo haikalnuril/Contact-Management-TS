@@ -24,11 +24,7 @@ export const authMiddleware = async (
             return
     }
 
-    console.log(bearerToken); //Bearer test
-
     const token = bearerToken?.split("Bearer ")[1]?.trim();
-
-    console.log(token); //test
 
     if (!token) {
         res.status(401)
