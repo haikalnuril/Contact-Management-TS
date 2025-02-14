@@ -1,4 +1,5 @@
 import { prismaClient } from "../application/database";
+import { User } from "@prisma/client";
 import { ResponseError } from "../errors/response.error";
 import {
     CreateUserRequest,
@@ -6,8 +7,10 @@ import {
     toUserResponse,
     UserResponse,
 } from "../models/user.model";
+
 import { Validation } from "../validations/index";
 import { UserValidation } from "../validations/user.validation";
+
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { SignOptions } from "jsonwebtoken";
@@ -92,5 +95,9 @@ export class UserService {
         response.token = user.token!;
 
         return response;
+    }
+
+    static async getCurrentUser(user: User): Promise<UserResponse> {
+        return toUserResponse(user);
     }
 }

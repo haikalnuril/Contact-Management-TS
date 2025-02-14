@@ -88,3 +88,41 @@ describe("POST /api/users/login", () => {
         expect(response.body.message).toBeDefined()
     })
 });
+
+describe("GET /api/users/current", () => {
+
+    beforeEach(async () => {
+        await UserTest.create();
+    });
+
+    afterEach(async () => {
+        await UserTest.delete();
+    });
+
+
+    it('should be able to get user', async () => {
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTU0NzUyNCwiZXhwIjoxNzM5NjMzOTI0fQ.GXhylDrcHSYlsGb7c9ohaG2dGoSdds2cwfhQ4eX8Uy0"
+        const response = await supertest(app).get("/api/users/current").set("authorization", `Bearer ${token}`)
+        
+        logger.debug(response.body)
+        expect(response.status).toBe(200)
+        expect(response.body.data.username).toBe("test");
+        expect(response.body.data.name).toBe("test");
+    })
+
+    it('should not be able to get user data', async () => {
+        const response = await supertest(app).get("/api/users/current").set("authorization", `Bearer `)
+        
+        logger.debug(response.body)
+        expect(response.status).toBe(401)
+        expect(response.body.message).toBeDefined()
+    })
+    it('should not be able to get user data', async () => {
+        const response = await supertest(app).get("/api/users/current")
+        
+        logger.debug(response.body)
+        expect(response.status).toBe(401)
+        expect(response.body.message).toBeDefined()
+    })
+
+})
