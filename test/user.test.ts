@@ -2,7 +2,7 @@ import supertest from "supertest";
 import { app } from "../src/application/server";
 import { logger } from "../src/application/logging";
 import { UserTest } from "./test-util";
-import bcrypt from "bcryptjs"
+import bcrypt from "bcryptjs";
 
 describe("POST /api/users", () => {
     afterEach(async () => {
@@ -195,9 +195,45 @@ describe("PATCH /api/users/current", () => {
         logger.debug(response.body);
 
         expect(response.status).toBe(200);
-        
-        const user = await UserTest.get()
 
-        expect(await bcrypt.compareSync("firhan12", user.password)).toBe(true)
+        const user = await UserTest.get();
+
+        expect(await bcrypt.compareSync("firhan12", user.password)).toBe(true);
+    });
+});
+
+describe("DELETE /api/users/current", () => {
+    beforeEach(async () => {
+        await UserTest.create();
+    });
+
+    afterEach(async () => {
+        await UserTest.delete();
+    });
+
+    it("should be able to logout", async () => {
+        const token =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTU0NzUyNCwiZXhwIjoxNzM5NjMzOTI0fQ.GXhylDrcHSYlsGb7c9ohaG2dGoSdds2cwfhQ4eX8Uy0";
+        const response = await supertest(app)
+            .delete("/api/users/current")
+            .set("authorization", `Bearer ${token}`);
+
+        logger.debug(response.body)
+        expect(response.status).toBe(200)
+        expect(response.body.message).toBe("Logout Success")
+
+        const user = await UserTest.get()
+        expect(user.token).toBe(null)
+    });
+    it("should reject to logout if token wrong", async () => {
+        
+        const response = await supertest(app)
+            .delete("/api/users/current")
+            .set("authorization", `Bearer `);
+
+        logger.debug(response.body)
+        expect(response.status).toBe(401)
+        expect(response.body.message).toBeDefined()
+
     });
 });
