@@ -55,3 +55,45 @@ describe("POST /api/contacts", () => {
         expect(response.body.message).toBeDefined()
     })
 })
+
+describe("GET /api/contacts/:contactId", () => {
+    beforeEach(async () => {
+        await UserTest.create();
+        await ContactTest.create()
+    });
+
+    afterEach(async () => {
+        await ContactTest.deleteAll()
+        await UserTest.delete();
+    });
+
+    it('should be able to get contact data by id params', async () => {
+        const contact = await ContactTest.get()
+        const token =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTU0NzUyNCwiZXhwIjoxNzM5NjMzOTI0fQ.GXhylDrcHSYlsGb7c9ohaG2dGoSdds2cwfhQ4eX8Uy0";
+        const response = await supertest(app)
+        .get(`/api/contacts/${contact.id}`)
+        .set("authorization", `Bearer ${token}`)
+
+        logger.debug(response.body)
+        expect(response.status).toBe(200)
+        expect(response.body.data.id).toBeDefined()
+        expect(response.body.data.first_name).toBe(contact.first_name)
+        expect(response.body.data.last_name).toBe(contact.last_name)
+        expect(response.body.data.email).toBe(contact.email)
+        expect(response.body.data.phone).toBe(contact.phone)
+    })
+
+    it('should not be able to get contact data by id params cause wrong id', async () => {
+        const contact = await ContactTest.get()
+        const token =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTU0NzUyNCwiZXhwIjoxNzM5NjMzOTI0fQ.GXhylDrcHSYlsGb7c9ohaG2dGoSdds2cwfhQ4eX8Uy0";
+        const response = await supertest(app)
+        .get(`/api/contacts/${contact.id + 1}`)
+        .set("authorization", `Bearer ${token}`)
+
+        logger.debug(response.body)
+        expect(response.status).toBe(404)
+        expect(response.body.message).toBeDefined()
+    })
+})
