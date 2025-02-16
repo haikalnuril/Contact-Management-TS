@@ -100,7 +100,7 @@ describe("GET /api/users/current", () => {
 
     it("should be able to get user", async () => {
         const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTU0NzUyNCwiZXhwIjoxNzM5NjMzOTI0fQ.GXhylDrcHSYlsGb7c9ohaG2dGoSdds2cwfhQ4eX8Uy0";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
         const response = await supertest(app)
             .get("/api/users/current")
             .set("authorization", `Bearer ${token}`);
@@ -140,7 +140,7 @@ describe("PATCH /api/users/current", () => {
 
     it("should reject update user if request is invalid", async () => {
         const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTU0NzUyNCwiZXhwIjoxNzM5NjMzOTI0fQ.GXhylDrcHSYlsGb7c9ohaG2dGoSdds2cwfhQ4eX8Uy0";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
         const response = await supertest(app)
             .patch("/api/users/current")
             .set("authorization", `Bearer ${token}`)
@@ -168,7 +168,7 @@ describe("PATCH /api/users/current", () => {
 
     it("should update user name", async () => {
         const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTU0NzUyNCwiZXhwIjoxNzM5NjMzOTI0fQ.GXhylDrcHSYlsGb7c9ohaG2dGoSdds2cwfhQ4eX8Uy0";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
         const response = await supertest(app)
             .patch("/api/users/current")
             .set("authorization", `Bearer ${token}`)
@@ -184,7 +184,7 @@ describe("PATCH /api/users/current", () => {
 
     it("should update user password", async () => {
         const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTU0NzUyNCwiZXhwIjoxNzM5NjMzOTI0fQ.GXhylDrcHSYlsGb7c9ohaG2dGoSdds2cwfhQ4eX8Uy0";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
         const response = await supertest(app)
             .patch("/api/users/current")
             .set("authorization", `Bearer ${token}`)
@@ -213,27 +213,25 @@ describe("DELETE /api/users/current", () => {
 
     it("should be able to logout", async () => {
         const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTU0NzUyNCwiZXhwIjoxNzM5NjMzOTI0fQ.GXhylDrcHSYlsGb7c9ohaG2dGoSdds2cwfhQ4eX8Uy0";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
         const response = await supertest(app)
             .delete("/api/users/current")
             .set("authorization", `Bearer ${token}`);
 
-        logger.debug(response.body)
-        expect(response.status).toBe(200)
-        expect(response.body.message).toBe("Logout Success")
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe("Logout Success");
 
-        const user = await UserTest.get()
-        expect(user.token).toBe(null)
+        const user = await UserTest.get();
+        expect(user.token).toBe(null);
     });
     it("should reject to logout if token wrong", async () => {
-        
         const response = await supertest(app)
             .delete("/api/users/current")
             .set("authorization", `Bearer `);
 
-        logger.debug(response.body)
-        expect(response.status).toBe(401)
-        expect(response.body.message).toBeDefined()
-
+        logger.debug(response.body);
+        expect(response.status).toBe(401);
+        expect(response.body.message).toBeDefined();
     });
 });
