@@ -129,4 +129,61 @@ describe("PUT /api/contacts/:contactId", () => {
         expect(response.body.data.email).toBe("haikal.nuril@example.com");
         expect(response.body.data.phone).toBe("08954444312");
     });
+
+    it("should not be able to update contact by id params", async () => {
+        const contact = await ContactTest.get();
+        const token =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
+        const response = await supertest(app)
+            .put(`/api/contacts/${contact.id + 1}`)
+            .set("authorization", `Bearer ${token}`)
+            .send({
+                first_name: "haikal",
+                last_name: "abiyit",
+                email: "haikal.nuril@example.com",
+                phone: "08954444312",
+            });
+
+        logger.debug(response.body);
+        expect(response.status).toBe(404);
+        expect(response.body.message).toBeDefined();
+    });
+});
+
+describe("DELETE /api/contacts/:contactId", () => {
+    beforeEach(async () => {
+        await UserTest.create();
+        await ContactTest.create();
+    });
+
+    afterEach(async () => {
+        await ContactTest.deleteAll();
+        await UserTest.delete();
+    });
+
+    it("should be able to delete contact by id params", async () => {
+        const contact = await ContactTest.get();
+        const token =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
+        const response = await supertest(app)
+            .delete(`/api/contacts/${contact.id}`)
+            .set("authorization", `Bearer ${token}`)
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBeDefined()
+    });
+
+    it("should not be able to delete contact by id params", async () => {
+        const contact = await ContactTest.get();
+        const token =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
+        const response = await supertest(app)
+            .delete(`/api/contacts/${contact.id + 1}`)
+            .set("authorization", `Bearer ${token}`)
+
+        logger.debug(response.body);
+        expect(response.status).toBe(404);
+        expect(response.body.message).toBeDefined()
+    });
 });
