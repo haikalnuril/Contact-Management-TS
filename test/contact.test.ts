@@ -2,7 +2,6 @@ import supertest from "supertest";
 import { ContactTest, UserTest } from "./test-util";
 import { app } from "../src/application/server";
 import { logger } from "../src/application/logging";
-import bcrypt from "bcryptjs";
 
 describe("POST /api/contacts", () => {
     beforeEach(async () => {
@@ -187,3 +186,81 @@ describe("DELETE /api/contacts/:contactId", () => {
         expect(response.body.message).toBeDefined()
     });
 });
+
+describe("GET /api/contacts/:query", () => {
+    beforeEach(async () => {
+        await UserTest.create();
+        await ContactTest.create();
+    });
+
+    afterEach(async () => {
+        await ContactTest.deleteAll();
+        await UserTest.delete();
+    });
+    it('should be able to get contacts data without using query', async () => {
+        const token =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
+        const response = await supertest(app)
+            .get("/api/contacts")
+            .set("authorization", `Bearer ${token}`)
+
+        logger.debug(response.body)
+        expect(response.status).toBe(200)
+        expect(response.body.data.length).toBe(1)
+        expect(response.body.paging.size).toBe(5)
+        expect(response.body.paging.current_page).toBe(1)
+        expect(response.body.paging.total_page).toBe(1)
+    })
+    it('should be able to get contacts data using query', async () => {
+        const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
+    const response = await supertest(app)
+        .get("/api/contacts")
+        .query({
+            name: "es",
+            email: "john",
+            phone: "089"
+        })
+        .set("authorization", `Bearer ${token}`)
+
+        logger.debug(response.body)
+        expect(response.status).toBe(200)
+        expect(response.body.data.length).toBe(1)
+        expect(response.body.paging.size).toBe(5)
+        expect(response.body.paging.current_page).toBe(1)
+        expect(response.body.paging.total_page).toBe(1)
+    })
+
+    it('should be able to get contacts data using query that false', async () => {
+        const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
+    const response = await supertest(app)
+        .get("/api/contacts")
+        .query({
+            name: "salah",
+        })
+        .set("authorization", `Bearer ${token}`)
+
+        logger.debug(response.body)
+        expect(response.status).toBe(200)
+        expect(response.body.data.length).toBe(0)
+        expect(response.body.paging.size).toBe(5)
+        expect(response.body.paging.current_page).toBe(1)
+        expect(response.body.paging.total_page).toBe(0)
+    })
+
+    it('should not be able to get contacts data', async () => {
+        const response = await supertest(app)
+        .get("/api/contacts")
+        .query({
+            name: "es",
+            email: "john",
+            phone: "089"
+        })
+        .set("authorization", `Bearer `)
+
+        logger.debug(response.body)
+        expect(response.status).toBe(401)
+        expect(response.body.message).toBeDefined()
+    })
+})
