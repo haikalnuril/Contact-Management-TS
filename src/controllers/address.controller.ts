@@ -49,4 +49,20 @@ export class AddressController {
             next(error)
         }
     }
+
+    static async remove(req: UserRequest, res: Response, next: NextFunction) {
+        try {
+            const request: GetAddressRequest = {
+                id: Number(req.params.addressId),
+                contact_id: Number(req.params.contactId)
+            }
+
+            const response = await AddressService.remove(req.user!, request)
+            res.status(200).json({
+                message: "Success to Delete Address"
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
 }

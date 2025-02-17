@@ -168,3 +168,32 @@ describe("PUT /api/contacts/:contactId/addresses/:addressId", () => {
         expect(response.body.message).toBeDefined();
     });
 });
+
+describe("DELETE /api/contacts/:contactId/addresses/:addressId", () => {
+    beforeEach(async () => {
+        await UserTest.create();
+        await ContactTest.create();
+        await AddressTest.create();
+    });
+
+    afterEach(async () => {
+        await AddressTest.deleteAll();
+        await ContactTest.deleteAll();
+        await UserTest.delete();
+    });
+
+    it('should be able to delete address', async () => {
+        const contact = await ContactTest.get();
+        const address = await AddressTest.get();
+        const token =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTc4NjYxNiwiZXhwIjoxNzM5ODczMDE2fQ.kbyiPcOn6tUv_1OmM20TpU1tDgc__syW9vyozwIEvIc";
+        const response = await supertest(app)
+            .delete(`/api/contacts/${contact.id}/addresses/${address.id}`)
+            .set("authorization", `Bearer ${token}`);
+        
+        logger.debug(response.body)
+        expect(response.status).toBe(200)
+        expect(response.body.message).toBeDefined()
+        
+        })
+})
