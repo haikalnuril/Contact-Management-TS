@@ -15,7 +15,7 @@ describe("POST /api/contacts", () => {
 
     it("should create new contact", async () => {
         const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTc4NjYxNiwiZXhwIjoxNzM5ODczMDE2fQ.kbyiPcOn6tUv_1OmM20TpU1tDgc__syW9vyozwIEvIc";
         const response = await supertest(app)
             .post("/api/contacts")
             .set("authorization", `Bearer ${token}`)
@@ -37,7 +37,7 @@ describe("POST /api/contacts", () => {
 
     it("should not be able to create new contact if data is invalid", async () => {
         const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTc4NjYxNiwiZXhwIjoxNzM5ODczMDE2fQ.kbyiPcOn6tUv_1OmM20TpU1tDgc__syW9vyozwIEvIc";
         const response = await supertest(app)
             .post("/api/contacts")
             .set("authorization", `Bearer ${token}`)
@@ -68,7 +68,7 @@ describe("GET /api/contacts/:contactId", () => {
     it("should be able to get contact data by id params", async () => {
         const contact = await ContactTest.get();
         const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTc4NjYxNiwiZXhwIjoxNzM5ODczMDE2fQ.kbyiPcOn6tUv_1OmM20TpU1tDgc__syW9vyozwIEvIc";
         const response = await supertest(app)
             .get(`/api/contacts/${contact.id}`)
             .set("authorization", `Bearer ${token}`);
@@ -85,7 +85,7 @@ describe("GET /api/contacts/:contactId", () => {
     it("should not be able to get contact data by id params cause wrong id", async () => {
         const contact = await ContactTest.get();
         const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTc4NjYxNiwiZXhwIjoxNzM5ODczMDE2fQ.kbyiPcOn6tUv_1OmM20TpU1tDgc__syW9vyozwIEvIc";
         const response = await supertest(app)
             .get(`/api/contacts/${contact.id + 1}`)
             .set("authorization", `Bearer ${token}`);
@@ -110,7 +110,7 @@ describe("PUT /api/contacts/:contactId", () => {
     it("should be able to update contact by id params", async () => {
         const contact = await ContactTest.get();
         const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTc4NjYxNiwiZXhwIjoxNzM5ODczMDE2fQ.kbyiPcOn6tUv_1OmM20TpU1tDgc__syW9vyozwIEvIc";
         const response = await supertest(app)
             .put(`/api/contacts/${contact.id}`)
             .set("authorization", `Bearer ${token}`)
@@ -132,7 +132,7 @@ describe("PUT /api/contacts/:contactId", () => {
     it("should not be able to update contact by id params", async () => {
         const contact = await ContactTest.get();
         const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTc4NjYxNiwiZXhwIjoxNzM5ODczMDE2fQ.kbyiPcOn6tUv_1OmM20TpU1tDgc__syW9vyozwIEvIc";
         const response = await supertest(app)
             .put(`/api/contacts/${contact.id + 1}`)
             .set("authorization", `Bearer ${token}`)
@@ -163,27 +163,27 @@ describe("DELETE /api/contacts/:contactId", () => {
     it("should be able to delete contact by id params", async () => {
         const contact = await ContactTest.get();
         const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTc4NjYxNiwiZXhwIjoxNzM5ODczMDE2fQ.kbyiPcOn6tUv_1OmM20TpU1tDgc__syW9vyozwIEvIc";
         const response = await supertest(app)
             .delete(`/api/contacts/${contact.id}`)
-            .set("authorization", `Bearer ${token}`)
+            .set("authorization", `Bearer ${token}`);
 
         logger.debug(response.body);
         expect(response.status).toBe(200);
-        expect(response.body.message).toBeDefined()
+        expect(response.body.message).toBeDefined();
     });
 
     it("should not be able to delete contact by id params", async () => {
         const contact = await ContactTest.get();
         const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTc4NjYxNiwiZXhwIjoxNzM5ODczMDE2fQ.kbyiPcOn6tUv_1OmM20TpU1tDgc__syW9vyozwIEvIc";
         const response = await supertest(app)
             .delete(`/api/contacts/${contact.id + 1}`)
-            .set("authorization", `Bearer ${token}`)
+            .set("authorization", `Bearer ${token}`);
 
         logger.debug(response.body);
         expect(response.status).toBe(404);
-        expect(response.body.message).toBeDefined()
+        expect(response.body.message).toBeDefined();
     });
 });
 
@@ -197,70 +197,70 @@ describe("GET /api/contacts/:query", () => {
         await ContactTest.deleteAll();
         await UserTest.delete();
     });
-    it('should be able to get contacts data without using query', async () => {
+    it("should be able to get contacts data without using query", async () => {
         const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTc4NjYxNiwiZXhwIjoxNzM5ODczMDE2fQ.kbyiPcOn6tUv_1OmM20TpU1tDgc__syW9vyozwIEvIc";
         const response = await supertest(app)
             .get("/api/contacts")
-            .set("authorization", `Bearer ${token}`)
+            .set("authorization", `Bearer ${token}`);
 
-        logger.debug(response.body)
-        expect(response.status).toBe(200)
-        expect(response.body.data.length).toBe(1)
-        expect(response.body.paging.size).toBe(5)
-        expect(response.body.paging.current_page).toBe(1)
-        expect(response.body.paging.total_page).toBe(1)
-    })
-    it('should be able to get contacts data using query', async () => {
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.data.length).toBe(1);
+        expect(response.body.paging.size).toBe(5);
+        expect(response.body.paging.current_page).toBe(1);
+        expect(response.body.paging.total_page).toBe(1);
+    });
+    it("should be able to get contacts data using query", async () => {
         const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
-    const response = await supertest(app)
-        .get("/api/contacts")
-        .query({
-            name: "es",
-            email: "john",
-            phone: "089"
-        })
-        .set("authorization", `Bearer ${token}`)
-
-        logger.debug(response.body)
-        expect(response.status).toBe(200)
-        expect(response.body.data.length).toBe(1)
-        expect(response.body.paging.size).toBe(5)
-        expect(response.body.paging.current_page).toBe(1)
-        expect(response.body.paging.total_page).toBe(1)
-    })
-
-    it('should be able to get contacts data using query that false', async () => {
-        const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTY5MDg1NSwiZXhwIjoxNzM5Nzc3MjU1fQ.2yqA1o-ICoU6QDDPF9VUHo3JbQ_wTnE8sI7mHYa7BoQ";
-    const response = await supertest(app)
-        .get("/api/contacts")
-        .query({
-            name: "salah",
-        })
-        .set("authorization", `Bearer ${token}`)
-
-        logger.debug(response.body)
-        expect(response.status).toBe(200)
-        expect(response.body.data.length).toBe(0)
-        expect(response.body.paging.size).toBe(5)
-        expect(response.body.paging.current_page).toBe(1)
-        expect(response.body.paging.total_page).toBe(0)
-    })
-
-    it('should not be able to get contacts data', async () => {
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTc4NjYxNiwiZXhwIjoxNzM5ODczMDE2fQ.kbyiPcOn6tUv_1OmM20TpU1tDgc__syW9vyozwIEvIc";
         const response = await supertest(app)
-        .get("/api/contacts")
-        .query({
-            name: "es",
-            email: "john",
-            phone: "089"
-        })
-        .set("authorization", `Bearer `)
+            .get("/api/contacts")
+            .query({
+                name: "es",
+                email: "john",
+                phone: "089",
+            })
+            .set("authorization", `Bearer ${token}`);
 
-        logger.debug(response.body)
-        expect(response.status).toBe(401)
-        expect(response.body.message).toBeDefined()
-    })
-})
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.data.length).toBe(1);
+        expect(response.body.paging.size).toBe(5);
+        expect(response.body.paging.current_page).toBe(1);
+        expect(response.body.paging.total_page).toBe(1);
+    });
+
+    it("should be able to get contacts data using query that false", async () => {
+        const token =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTc4NjYxNiwiZXhwIjoxNzM5ODczMDE2fQ.kbyiPcOn6tUv_1OmM20TpU1tDgc__syW9vyozwIEvIc";
+        const response = await supertest(app)
+            .get("/api/contacts")
+            .query({
+                name: "salah",
+            })
+            .set("authorization", `Bearer ${token}`);
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.data.length).toBe(0);
+        expect(response.body.paging.size).toBe(5);
+        expect(response.body.paging.current_page).toBe(1);
+        expect(response.body.paging.total_page).toBe(0);
+    });
+
+    it("should not be able to get contacts data", async () => {
+        const response = await supertest(app)
+            .get("/api/contacts")
+            .query({
+                name: "es",
+                email: "john",
+                phone: "089",
+            })
+            .set("authorization", `Bearer `);
+
+        logger.debug(response.body);
+        expect(response.status).toBe(401);
+        expect(response.body.message).toBeDefined();
+    });
+});
