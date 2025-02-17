@@ -105,6 +105,66 @@ describe("GET /api/contacts/:contactId/addresses/:addressId", () => {
         logger.debug(response.body);
         expect(response.status).toBe(404);
         expect(response.body.message).toBeDefined();
+    });
+});
 
+describe("PUT /api/contacts/:contactId/addresses/:addressId", () => {
+    beforeEach(async () => {
+        await UserTest.create();
+        await ContactTest.create();
+        await AddressTest.create();
+    });
+
+    afterEach(async () => {
+        await AddressTest.deleteAll();
+        await ContactTest.deleteAll();
+        await UserTest.delete();
+    });
+
+    it("should be able to update address", async () => {
+        const contact = await ContactTest.get();
+        const address = await AddressTest.get();
+        const token =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTc4NjYxNiwiZXhwIjoxNzM5ODczMDE2fQ.kbyiPcOn6tUv_1OmM20TpU1tDgc__syW9vyozwIEvIc";
+        const response = await supertest(app)
+            .put(`/api/contacts/${contact.id}/addresses/${address.id}`)
+            .set("authorization", `Bearer ${token}`)
+            .send({
+                street: "Jawa st.",
+                city: "Ubud",
+                province: "Bali",
+                country: "Indonesia",
+                postal_code: "68332",
+            });
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.data.id).toBeDefined();
+        expect(response.body.data.street).toBe("Jawa st.");
+        expect(response.body.data.city).toBe("Ubud");
+        expect(response.body.data.province).toBe("Bali");
+        expect(response.body.data.country).toBe("Indonesia");
+        expect(response.body.data.postal_code).toBe("68332");
+    });
+
+    it("should not be able to update address", async () => {
+        const contact = await ContactTest.get();
+        const address = await AddressTest.get();
+        const token =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTc4NjYxNiwiZXhwIjoxNzM5ODczMDE2fQ.kbyiPcOn6tUv_1OmM20TpU1tDgc__syW9vyozwIEvIc";
+        const response = await supertest(app)
+            .put(`/api/contacts/${contact.id}/addresses/${address.id +1 }`)
+            .set("authorization", `Bearer ${token}`)
+            .send({
+                street: "Jawa st.",
+                city: "Ubud",
+                province: "Bali",
+                country: "Indonesia",
+                postal_code: "68332",
+            });
+
+        logger.debug(response.body);
+        expect(response.status).toBe(404);
+        expect(response.body.message).toBeDefined();
     });
 });
