@@ -5,6 +5,7 @@ import { AddressValidation } from "../validations/address.validation";
 import { prismaClient } from "../application/database";
 import { ContactService } from "./contact.service";
 import { ResponseError } from "../errors/response.error";
+import { logger } from "../application/logging";
 
 export class AddressService {
 
@@ -38,9 +39,9 @@ export class AddressService {
     static async get(user: User, request: GetAddressRequest) : Promise<AddressResponse> {
         const getRequest = Validation.validate(AddressValidation.GET, request)
         await ContactService.checkContactMustExists(user.username, getRequest.contact_id)
-        const contact = await this.checkAddressMustExists(getRequest.contact_id, getRequest.id)
+        const address = await this.checkAddressMustExists(getRequest.contact_id, getRequest.id)
         
-        return toAddressResponse(contact)
+        return toAddressResponse(address)
     }
 
     static async update(user: User, request: UpdateAddressRequest) : Promise<AddressResponse> {
@@ -48,7 +49,7 @@ export class AddressService {
         await ContactService.checkContactMustExists(user.username, updateRequest.contact_id)
         await this.checkAddressMustExists(updateRequest.contact_id, updateRequest.id)
 
-        const contact = await prismaClient.address.update({
+        const address = await prismaClient.address.update({
             where: {
                 id: updateRequest.id,
                 contact_id: updateRequest.contact_id
@@ -56,19 +57,31 @@ export class AddressService {
             data: updateRequest
         })
 
-        return toAddressResponse(contact)
+        return toAddressResponse(address)
     }
 
     static async remove(user: User, request: GetAddressRequest) : Promise<AddressResponse> {
         await ContactService.checkContactMustExists(user.username, request.contact_id)
         await this.checkAddressMustExists(request.contact_id, request.id)
-        const contact = await prismaClient.address.delete({
+        const address = await prismaClient.address.delete({
             where: {
                 id: request.id,
                 contact_id: request.contact_id
             }
         })
 
-        return toAddressResponse(contact)
+        return toAddressResponse(address)
+    }
+
+    static async list(user: User, contactId: number) : Promise<Array<AddressResponse>> {
+        await ContactService.checkContactMustExists(user.username, contactId)
+
+        const addresses = await prismaClient.address.findMany({
+            where: {
+                contact_id: contactId
+            }
+        })
+
+        return addresses.map((address) => toAddressResponse(address))
     }
 }

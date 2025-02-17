@@ -197,3 +197,33 @@ describe("DELETE /api/contacts/:contactId/addresses/:addressId", () => {
         
         })
 })
+
+describe("GET /api/contacts/:contactId/addresses", () => {
+    beforeEach(async () => {
+        await UserTest.create();
+        await ContactTest.create();
+        await AddressTest.create();
+    });
+
+    afterEach(async () => {
+        await AddressTest.deleteAll();
+        await ContactTest.deleteAll();
+        await UserTest.delete();
+    });
+
+    it('should be able to get addresses', async () => {
+        const contact = await ContactTest.get();
+        const token =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJuYW1lIjoidGVzdCIsImlhdCI6MTczOTc4NjYxNiwiZXhwIjoxNzM5ODczMDE2fQ.kbyiPcOn6tUv_1OmM20TpU1tDgc__syW9vyozwIEvIc";
+        const response = await supertest(app)
+            .get(`/api/contacts/${contact.id}/addresses`)
+            .set("authorization", `Bearer ${token}`);
+        
+        logger.debug(response.body)
+        expect(response.status).toBe(200)
+        expect(response.body.data.length).toBe(1)
+        
+        })
+})
+
+
